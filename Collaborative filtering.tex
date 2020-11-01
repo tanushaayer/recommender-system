@@ -1,0 +1,1261 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Collaborative filtering}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    COLLABORATIVE FILTERING
+
+    Recommendation systems are a collection of algorithms used to recommend
+items to users based on information taken from the user. These systems
+have become ubiquitous can be commonly seen in online stores, movies
+databases and job finders. In this notebook, we will explore
+recommendation systems based on Collaborative Filtering and implement
+simple version of one using Python and the Pandas library.
+
+    Table of contents
+
+\begin{verbatim}
+<ol>
+    <li><a href="#ref1">Acquiring the Data</a></li>
+    <li><a href="#ref2">Preprocessing</a></li>
+    <li><a href="#ref3">Collaborative Filtering</a></li>
+</ol>
+\end{verbatim}
+
+    \# Acquiring the Data
+
+    To acquire and extract the data, simply run the following Bash
+scripts:\\
+Dataset acquired from
+\href{http://grouplens.org/datasets/movielens/}{GroupLens}. Lets
+download the dataset. To download the data, we will use
+\textbf{\texttt{!wget}} to download it from IBM Object Storage.\\
+\textbf{Did you know?} When it comes to Machine Learning, you will
+likely be working with large datasets. As a business, where can you host
+your data? IBM is offering a unique opportunity for businesses, with 10
+Tb of IBM Cloud Object Storage:
+\href{http://cocl.us/ML0101EN-IBM-Offer-CC}{Sign up now for free}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}wget \PYZhy{}O moviedataset.zip https://s3\PYZhy{}api.us\PYZhy{}geo.objectstorage.softlayer.net/cf\PYZhy{}courses\PYZhy{}data/CognitiveClass/ML0101ENv3/labs/moviedataset.zip
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{unziping ...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{o}{!}unzip \PYZhy{}o \PYZhy{}j moviedataset.zip 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--2020-11-01 04:02:31--  https://s3-api.us-geo.objectstorage.softlayer.net/cf-
+courses-data/CognitiveClass/ML0101ENv3/labs/moviedataset.zip
+Resolving s3-api.us-geo.objectstorage.softlayer.net (s3-api.us-
+geo.objectstorage.softlayer.net){\ldots} 67.228.254.196
+Connecting to s3-api.us-geo.objectstorage.softlayer.net (s3-api.us-
+geo.objectstorage.softlayer.net)|67.228.254.196|:443{\ldots} connected.
+HTTP request sent, awaiting response{\ldots} 200 OK
+Length: 160301210 (153M) [application/zip]
+Saving to: ‘moviedataset.zip’
+
+moviedataset.zip    100\%[===================>] 152.88M  31.3MB/s    in 5.0s
+
+2020-11-01 04:02:36 (30.5 MB/s) - ‘moviedataset.zip’ saved [160301210/160301210]
+
+unziping {\ldots}
+Archive:  moviedataset.zip
+  inflating: links.csv
+  inflating: movies.csv
+  inflating: ratings.csv
+  inflating: README.txt
+  inflating: tags.csv
+    \end{Verbatim}
+
+    Now you're ready to start working with the data!
+
+    \# Preprocessing
+
+    First, let's get all of the imports out of the way:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Dataframe manipulation library}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{c+c1}{\PYZsh{}Math functions, we\PYZsq{}ll only need the sqrt function so let\PYZsq{}s import only that}
+\PY{k+kn}{from} \PY{n+nn}{math} \PY{k}{import} \PY{n}{sqrt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now let's read each file into their Dataframes:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Storing the movie information into a pandas dataframe}
+\PY{n}{movies\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movies.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Storing the user information into a pandas dataframe}
+\PY{n}{ratings\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratings.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Let's also take a peek at how each of them are organized:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Head is a function that gets the first N rows of a dataframe. N\PYZsq{}s default is 5.}
+\PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   movieId                               title  \textbackslash{}
+0        1                    Toy Story (1995)
+1        2                      Jumanji (1995)
+2        3             Grumpier Old Men (1995)
+3        4            Waiting to Exhale (1995)
+4        5  Father of the Bride Part II (1995)
+
+                                        genres
+0  Adventure|Animation|Children|Comedy|Fantasy
+1                   Adventure|Children|Fantasy
+2                               Comedy|Romance
+3                         Comedy|Drama|Romance
+4                                       Comedy
+\end{Verbatim}
+\end{tcolorbox}
+        
+    So each movie has a unique ID, a title with its release year along with
+it (Which may contain unicode characters) and several different genres
+in the same field. Let's remove the year from the title column and place
+it into its own one by using the handy
+\href{http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html\#pandas.Series.str.extract}{extract}
+function that Pandas has.
+
+    Let's remove the year from the \textbf{title} column by using pandas'
+replace function and store in a new \textbf{year} column.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Using regular expressions to find a year stored between parentheses}
+\PY{c+c1}{\PYZsh{}We specify the parantheses so we don\PYZsq{}t conflict with movies that have years in their titles}
+\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{extract}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{(}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{))}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{expand}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Removing the parentheses}
+\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{year}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{extract}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{expand}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Removing the years from the \PYZsq{}title\PYZsq{} column}
+\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{(}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{))}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Applying the strip function to get rid of any ending whitespace characters that may have appeared}
+\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Let's look at the result!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   movieId                        title  \textbackslash{}
+0        1                    Toy Story
+1        2                      Jumanji
+2        3             Grumpier Old Men
+3        4            Waiting to Exhale
+4        5  Father of the Bride Part II
+
+                                        genres  year
+0  Adventure|Animation|Children|Comedy|Fantasy  1995
+1                   Adventure|Children|Fantasy  1995
+2                               Comedy|Romance  1995
+3                         Comedy|Drama|Romance  1995
+4                                       Comedy  1995
+\end{Verbatim}
+\end{tcolorbox}
+        
+    With that, let's also drop the genres column since we won't need it for
+this particular recommendation system.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Dropping the genres column}
+\PY{n}{movies\PYZus{}df} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{genres}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Here's the final movies dataframe:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   movieId                        title  year
+0        1                    Toy Story  1995
+1        2                      Jumanji  1995
+2        3             Grumpier Old Men  1995
+3        4            Waiting to Exhale  1995
+4        5  Father of the Bride Part II  1995
+\end{Verbatim}
+\end{tcolorbox}
+        
+    
+
+    Next, let's look at the ratings dataframe.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ratings\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   userId  movieId  rating   timestamp
+0       1      169     2.5  1204927694
+1       1     2471     3.0  1204927438
+2       1    48516     5.0  1204927435
+3       2     2571     3.5  1436165433
+4       2   109487     4.0  1436165496
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Every row in the ratings dataframe has a user id associated with at
+least one movie, a rating and a timestamp showing when they reviewed it.
+We won't be needing the timestamp column, so let's drop it to save on
+memory.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Drop removes a specified row or column from a dataframe}
+\PY{n}{ratings\PYZus{}df} \PY{o}{=} \PY{n}{ratings\PYZus{}df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{timestamp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Here's how the final ratings Dataframe looks like:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ratings\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   userId  movieId  rating
+0       1      169     2.5
+1       1     2471     3.0
+2       1    48516     5.0
+3       2     2571     3.5
+4       2   109487     4.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \# Collaborative Filtering
+
+    Now, time to start our work on recommendation systems.
+
+The first technique we're going to take a look at is called
+\textbf{Collaborative Filtering}, which is also known as
+\textbf{User-User Filtering}. As hinted by its alternate name, this
+technique uses other users to recommend items to the input user. It
+attempts to find users that have similar preferences and opinions as the
+input and then recommends items that they have liked to the input. There
+are several methods of finding similar users (Even some making use of
+Machine Learning), and the one we will be using here is going to be
+based on the \textbf{Pearson Correlation Function}.
+
+\begin{figure}
+\centering
+\includegraphics{https://wikimedia.org/api/rest_v1/media/math/render/svg/bd1ccc2979b0fd1c1aec96e386f686ae874f9ec0}
+\caption{alt text}
+\end{figure}
+
+The process for creating a User Based recommendation system is as
+follows: - Select a user with the movies the user has watched - Based on
+his rating to movies, find the top X neighbours - Get the watched movie
+record of the user for each neighbour. - Calculate a similarity score
+using some formula - Recommend the items with the highest score
+
+Let's begin by creating an input user to recommend movies to:
+
+Notice: To add more movies, simply increase the amount of elements in
+the userInput. Feel free to add more in! Just be sure to write it in
+with capital letters and if a movie starts with a ``The'', like ``The
+Matrix'' then write it in like this: `Matrix, The' .
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{userInput} \PY{o}{=} \PY{p}{[}
+            \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Breakfast Club, The}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Toy Story}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{3.5}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jumanji}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pulp Fiction}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Akira}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{4.5}\PY{p}{\PYZcb{}}
+         \PY{p}{]} 
+\PY{n}{inputMovies} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{userInput}\PY{p}{)}
+\PY{n}{inputMovies}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 title  rating
+0  Breakfast Club, The     5.0
+1            Toy Story     3.5
+2              Jumanji     2.0
+3         Pulp Fiction     5.0
+4                Akira     4.5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{add-movieid-to-input-user}{%
+\paragraph{Add movieId to input user}\label{add-movieid-to-input-user}}
+
+With the input complete, let's extract the input movies's ID's from the
+movies dataframe and add them into it.
+
+We can achieve this by first filtering out the rows that contain the
+input movies' title and then merging this subset with the input
+dataframe. We also drop unnecessary columns for the input to save memory
+space.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Filtering out the movies by title}
+\PY{n}{inputId} \PY{o}{=} \PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{inputMovies}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{title}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}Then merging it so we can get the movieId. It\PYZsq{}s implicitly merging it by title.}
+\PY{n}{inputMovies} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{inputId}\PY{p}{,} \PY{n}{inputMovies}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Dropping information we won\PYZsq{}t use from the input dataframe}
+\PY{n}{inputMovies} \PY{o}{=} \PY{n}{inputMovies}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Final input dataframe}
+\PY{c+c1}{\PYZsh{}If a movie you added in above isn\PYZsq{}t here, then it might not be in the original }
+\PY{c+c1}{\PYZsh{}dataframe or it might spelled differently, please check capitalisation.}
+\PY{n}{inputMovies}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   movieId                title  rating
+0        1            Toy Story     3.5
+1        2              Jumanji     2.0
+2      296         Pulp Fiction     5.0
+3     1274                Akira     4.5
+4     1968  Breakfast Club, The     5.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{the-users-who-has-seen-the-same-movies}{%
+\paragraph{The users who has seen the same
+movies}\label{the-users-who-has-seen-the-same-movies}}
+
+Now with the movie ID's in our input, we can now get the subset of users
+that have watched and reviewed the movies in our input.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Filtering out users that have watched movies that the input has watched and storing it}
+\PY{n}{userSubset} \PY{o}{=} \PY{n}{ratings\PYZus{}df}\PY{p}{[}\PY{n}{ratings\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{inputMovies}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\PY{n}{userSubset}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+     userId  movieId  rating
+19        4      296     4.0
+441      12     1968     3.0
+479      13        2     2.0
+531      13     1274     5.0
+681      14      296     2.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We now group up the rows by user ID.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Groupby creates several sub dataframes where they all have the same value in the column specified as the parameter}
+\PY{n}{userSubsetGroup} \PY{o}{=} \PY{n}{userSubset}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{userId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    lets look at one of the users, e.g.~the one with userID=1130
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{userSubsetGroup}\PY{o}{.}\PY{n}{get\PYZus{}group}\PY{p}{(}\PY{l+m+mi}{1130}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        userId  movieId  rating
+104167    1130        1     0.5
+104168    1130        2     4.0
+104214    1130      296     4.0
+104363    1130     1274     4.5
+104443    1130     1968     4.5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Let's also sort these groups so the users that share the most movies in
+common with the input have higher priority. This provides a richer
+recommendation since we won't go through every single user.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Sorting it so users with movie most in common with the input will have priority}
+\PY{n}{userSubsetGroup} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{userSubsetGroup}\PY{p}{,}  \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now lets look at the first user
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{userSubsetGroup}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[(75,
+        userId  movieId  rating
+  7507      75        1     5.0
+  7508      75        2     3.5
+  7540      75      296     5.0
+  7633      75     1274     4.5
+  7673      75     1968     5.0),
+ (106,
+        userId  movieId  rating
+  9083     106        1     2.5
+  9084     106        2     3.0
+  9115     106      296     3.5
+  9198     106     1274     3.0
+  9238     106     1968     3.5),
+ (686,
+         userId  movieId  rating
+  61336     686        1     4.0
+  61337     686        2     3.0
+  61377     686      296     4.0
+  61478     686     1274     4.0
+  61569     686     1968     5.0)]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{similarity-of-users-to-input-user}{%
+\paragraph{Similarity of users to input
+user}\label{similarity-of-users-to-input-user}}
+
+Next, we are going to compare all users (not really all !!!) to our
+specified user and find the one that is most similar.\\
+we're going to find out how similar each user is to the input through
+the \textbf{Pearson Correlation Coefficient}. It is used to measure the
+strength of a linear association between two variables. The formula for
+finding this coefficient between sets X and Y with N values can be seen
+in the image below.
+
+Why Pearson Correlation?
+
+Pearson correlation is invariant to scaling, i.e.~multiplying all
+elements by a nonzero constant or adding any constant to all elements.
+For example, if you have two vectors X and Y,then, pearson(X, Y) ==
+pearson(X, 2 * Y + 3). This is a pretty important property in
+recommendation systems because for example two users might rate two
+series of items totally different in terms of absolute rates, but they
+would be similar users (i.e.~with similar ideas) with similar rates in
+various scales .
+
+\begin{figure}
+\centering
+\includegraphics{https://wikimedia.org/api/rest_v1/media/math/render/svg/bd1ccc2979b0fd1c1aec96e386f686ae874f9ec0}
+\caption{alt text}
+\end{figure}
+
+The values given by the formula vary from r = -1 to r = 1, where 1 forms
+a direct correlation between the two entities (it means a perfect
+positive correlation) and -1 forms a perfect negative correlation.
+
+In our case, a 1 means that the two users have similar tastes while a -1
+means the opposite.
+
+    We will select a subset of users to iterate through. This limit is
+imposed because we don't want to waste too much time going through every
+single user.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{userSubsetGroup} \PY{o}{=} \PY{n}{userSubsetGroup}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{100}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Now, we calculate the Pearson Correlation between input user and subset
+group, and store it in a dictionary, where the key is the user Id and
+the value is the coefficient
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Store the Pearson Correlation in a dictionary, where the key is the user Id and the value is the coefficient}
+\PY{n}{pearsonCorrelationDict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{}For every user group in our subset}
+\PY{k}{for} \PY{n}{name}\PY{p}{,} \PY{n}{group} \PY{o+ow}{in} \PY{n}{userSubsetGroup}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}Let\PYZsq{}s start by sorting the input and current user group so the values aren\PYZsq{}t mixed up later on}
+    \PY{n}{group} \PY{o}{=} \PY{n}{group}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{inputMovies} \PY{o}{=} \PY{n}{inputMovies}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Get the N for the formula}
+    \PY{n}{nRatings} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{group}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Get the review scores for the movies that they both have in common}
+    \PY{n}{temp\PYZus{}df} \PY{o}{=} \PY{n}{inputMovies}\PY{p}{[}\PY{n}{inputMovies}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+    \PY{c+c1}{\PYZsh{}And then store them in a temporary buffer variable in a list format to facilitate future calculations}
+    \PY{n}{tempRatingList} \PY{o}{=} \PY{n}{temp\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Let\PYZsq{}s also put the current user group reviews in a list format}
+    \PY{n}{tempGroupList} \PY{o}{=} \PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Now let\PYZsq{}s calculate the pearson correlation between two users, so called, x and y}
+    \PY{n}{Sxx} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{i}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{tempRatingList}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{pow}\PY{p}{(}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{tempRatingList}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{nRatings}\PY{p}{)}
+    \PY{n}{Syy} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{[}\PY{n}{i}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{tempGroupList}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{pow}\PY{p}{(}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{tempGroupList}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{nRatings}\PY{p}{)}
+    \PY{n}{Sxy} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(} \PY{n}{i}\PY{o}{*}\PY{n}{j} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{tempRatingList}\PY{p}{,} \PY{n}{tempGroupList}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{tempRatingList}\PY{p}{)}\PY{o}{*}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{tempGroupList}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n}{nRatings}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{}If the denominator is different than zero, then divide, else, 0 correlation.}
+    \PY{k}{if} \PY{n}{Sxx} \PY{o}{!=} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{Syy} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{n}{pearsonCorrelationDict}\PY{p}{[}\PY{n}{name}\PY{p}{]} \PY{o}{=} \PY{n}{Sxy}\PY{o}{/}\PY{n}{sqrt}\PY{p}{(}\PY{n}{Sxx}\PY{o}{*}\PY{n}{Syy}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{pearsonCorrelationDict}\PY{p}{[}\PY{n}{name}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pearsonCorrelationDict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+dict\_items([(75, 0.8272781516947562), (106, 0.5860090386731182), (686,
+0.8320502943378437), (815, 0.5765566601970551), (1040, 0.9434563530497265),
+(1130, 0.2891574659831201), (1502, 0.8770580193070299), (1599,
+0.4385290096535153), (1625, 0.716114874039432), (1950, 0.179028718509858),
+(2065, 0.4385290096535153), (2128, 0.5860090386731196), (2432,
+0.1386750490563073), (2791, 0.8770580193070299), (2839, 0.8204126541423674),
+(2948, -0.11720180773462392), (3025, 0.45124262819713973), (3040,
+0.89514359254929), (3186, 0.6784622064861935), (3271, 0.26989594817970664),
+(3429, 0.0), (3734, -0.15041420939904673), (4099, 0.05860090386731196), (4208,
+0.29417420270727607), (4282, -0.4385290096535115), (4292, 0.6564386345361464),
+(4415, -0.11183835382312353), (4586, -0.9024852563942795), (4725,
+-0.08006407690254357), (4818, 0.4885967564883424), (5104, 0.7674257668936507),
+(5165, -0.4385290096535153), (5547, 0.17200522903844556), (6082,
+-0.04728779924109591), (6207, 0.9615384615384616), (6366, 0.6577935144802716),
+(6482, 0.0), (6530, -0.3516054232038709), (7235, 0.6981407669689391), (7403,
+0.11720180773462363), (7641, 0.7161148740394331), (7996, 0.626600514784504),
+(8008, -0.22562131409856986), (8086, 0.6933752452815365), (8245, 0.0), (8572,
+0.8600261451922278), (8675, 0.5370861555295773), (9101, -0.08600261451922278),
+(9358, 0.692178738358485), (9663, 0.193972725041952), (9994,
+0.5030272728659587), (10248, -0.24806946917841693), (10315, 0.537086155529574),
+(10368, 0.4688072309384945), (10607, 0.41602514716892186), (10707,
+0.9615384615384616), (10863, 0.6020183016345595), (11314, 0.8204126541423654),
+(11399, 0.517260600111872), (11769, 0.9376144618769914), (11827,
+0.4902903378454601), (12069, 0.0), (12120, 0.9292940047327363), (12211,
+0.8600261451922278), (12325, 0.9616783115081544), (12916, 0.5860090386731196),
+(12921, 0.6611073566849309), (13053, 0.9607689228305227), (13142,
+0.6016568375961863), (13260, 0.7844645405527362), (13366, 0.8951435925492911),
+(13768, 0.8770580193070289), (13888, 0.2508726030021272), (13923,
+0.3516054232038718), (13934, 0.17200522903844556), (14529, 0.7417901772340937),
+(14551, 0.537086155529574), (14588, 0.21926450482675766), (14984,
+0.716114874039432), (15137, 0.5860090386731196), (15157, 0.9035841064985974),
+(15466, 0.7205766921228921), (15670, 0.516015687115336), (15834,
+0.22562131409856986), (16292, 0.6577935144802716), (16456, 0.7161148740394331),
+(16506, 0.5481612620668942), (17246, 0.48038446141526137), (17438,
+0.7093169886164387), (17501, 0.8168748513121271), (17502, 0.8272781516947562),
+(17666, 0.7689238340176859), (17735, 0.7042381820123422), (17742,
+0.3922322702763681), (17757, 0.64657575013984), (17854, 0.537086155529574),
+(17897, 0.8770580193070289), (17944, 0.2713848825944774), (18301,
+0.29838119751643016), (18509, 0.1322214713369862)])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pearsonDF} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{from\PYZus{}dict}\PY{p}{(}\PY{n}{pearsonCorrelationDict}\PY{p}{,} \PY{n}{orient}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{pearsonDF}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{pearsonDF}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{userId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pearsonDF}\PY{o}{.}\PY{n}{index}
+\PY{n}{pearsonDF}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{pearsonDF}\PY{p}{)}\PY{p}{)}
+\PY{n}{pearsonDF}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   similarityIndex  userId
+0         0.827278      75
+1         0.586009     106
+2         0.832050     686
+3         0.576557     815
+4         0.943456    1040
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{the-top-x-similar-users-to-input-user}{%
+\paragraph{The top x similar users to input
+user}\label{the-top-x-similar-users-to-input-user}}
+
+Now let's get the top 50 users that are most similar to the input.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topUsers}\PY{o}{=}\PY{n}{pearsonDF}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{50}\PY{p}{]}
+\PY{n}{topUsers}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    similarityIndex  userId
+64         0.961678   12325
+34         0.961538    6207
+55         0.961538   10707
+67         0.960769   13053
+4          0.943456    1040
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now, let's start recommending movies to the input user.
+
+\hypertarget{rating-of-selected-users-to-all-movies}{%
+\paragraph{Rating of selected users to all
+movies}\label{rating-of-selected-users-to-all-movies}}
+
+We're going to do this by taking the weighted average of the ratings of
+the movies using the Pearson Correlation as the weight. But to do this,
+we first need to get the movies watched by the users in our
+\textbf{pearsonDF} from the ratings dataframe and then store their
+correlation in a new column called \_similarityIndex". This is achieved
+below by merging of these two tables.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{topUsersRating}\PY{o}{=}\PY{n}{topUsers}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{ratings\PYZus{}df}\PY{p}{,} \PY{n}{left\PYZus{}on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{userId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{right\PYZus{}on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{userId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{topUsersRating}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   similarityIndex  userId  movieId  rating
+0         0.961678   12325        1     3.5
+1         0.961678   12325        2     1.5
+2         0.961678   12325        3     3.0
+3         0.961678   12325        5     0.5
+4         0.961678   12325        6     2.5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now all we need to do is simply multiply the movie rating by its weight
+(The similarity index), then sum up the new ratings and divide it by the
+sum of the weights.
+
+We can easily do this by simply multiplying two columns, then grouping
+up the dataframe by movieId and then dividing two columns:
+
+It shows the idea of all similar users to candidate movies for the input
+user:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Multiplies the similarity by the user\PYZsq{}s ratings}
+\PY{n}{topUsersRating}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weightedRating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{topUsersRating}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{n}{topUsersRating}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{topUsersRating}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   similarityIndex  userId  movieId  rating  weightedRating
+0         0.961678   12325        1     3.5        3.365874
+1         0.961678   12325        2     1.5        1.442517
+2         0.961678   12325        3     3.0        2.885035
+3         0.961678   12325        5     0.5        0.480839
+4         0.961678   12325        6     2.5        2.404196
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Applies a sum to the topUsers after grouping it up by userId}
+\PY{n}{tempTopUsersRating} \PY{o}{=} \PY{n}{topUsersRating}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weightedRating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\PY{n}{tempTopUsersRating}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum\PYZus{}similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum\PYZus{}weightedRating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{tempTopUsersRating}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         sum\_similarityIndex  sum\_weightedRating
+movieId
+1                  38.376281          140.800834
+2                  38.376281           96.656745
+3                  10.253981           27.254477
+4                   0.929294            2.787882
+5                  11.723262           27.151751
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Creates an empty dataframe}
+\PY{n}{recommendation\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Now we take the weighted average}
+\PY{n}{recommendation\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted average recommendation score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{tempTopUsersRating}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum\PYZus{}weightedRating}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{tempTopUsersRating}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum\PYZus{}similarityIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{recommendation\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{tempTopUsersRating}\PY{o}{.}\PY{n}{index}
+\PY{n}{recommendation\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         weighted average recommendation score  movieId
+movieId
+1                                     3.668955        1
+2                                     2.518658        2
+3                                     2.657941        3
+4                                     3.000000        4
+5                                     2.316058        5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now let's sort it and see the top 20 movies that the algorithm
+recommended!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{recommendation\PYZus{}df} \PY{o}{=} \PY{n}{recommendation\PYZus{}df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted average recommendation score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{recommendation\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         weighted average recommendation score  movieId
+movieId
+5073                                       5.0     5073
+3329                                       5.0     3329
+2284                                       5.0     2284
+26801                                      5.0    26801
+6776                                       5.0     6776
+6672                                       5.0     6672
+3759                                       5.0     3759
+3769                                       5.0     3769
+3775                                       5.0     3775
+90531                                      5.0    90531
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{movies\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{movies\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{recommendation\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{movieId}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       movieId                                    title  year
+2200      2284                             Bandit Queen  1994
+3243      3329                 Year My Voice Broke, The  1987
+3669      3759                       Fun and Fancy Free  1947
+3679      3769                Thunderbolt and Lightfoot  1974
+3685      3775                          Make Mine Music  1946
+4978      5073  Son's Room, The (Stanza del figlio, La)  2001
+6563      6672                         War Photographer  2001
+6667      6776        Lagaan: Once Upon a Time in India  2001
+9064     26801      Dragon Inn (Sun lung moon hak chan)  1992
+18106    90531                                    Shame  2011
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{advantages-and-disadvantages-of-collaborative-filtering}{%
+\subsubsection{Advantages and Disadvantages of Collaborative
+Filtering}\label{advantages-and-disadvantages-of-collaborative-filtering}}
+
+\hypertarget{advantages}{%
+\subparagraph{Advantages}\label{advantages}}
+
+\begin{itemize}
+\tightlist
+\item
+  Takes other user's ratings into consideration
+\item
+  Doesn't need to study or extract information from the recommended item
+\item
+  Adapts to the user's interests which might change over time
+\end{itemize}
+
+\hypertarget{disadvantages}{%
+\subparagraph{Disadvantages}\label{disadvantages}}
+
+\begin{itemize}
+\tightlist
+\item
+  Approximation function can be slow
+\item
+  There might be a low of amount of users to approximate
+\item
+  Privacy issues when trying to learn the user's preferences
+\end{itemize}
+
+    Want to learn more?
+
+IBM SPSS Modeler is a comprehensive analytics platform that has many
+machine learning algorithms. It has been designed to bring predictive
+intelligence to decisions made by individuals, by groups, by systems --
+by your enterprise as a whole. A free trial is available through this
+course, available here: SPSS Modeler
+
+Also, you can use Watson Studio to run these notebooks faster with
+bigger datasets. Watson Studio is IBM's leading cloud solution for data
+scientists, built by data scientists. With Jupyter notebooks, RStudio,
+Apache Spark and popular libraries pre-packaged in the cloud, Watson
+Studio enables data scientists to collaborate on their projects without
+having to install anything. Join the fast-growing community of Watson
+Studio users today with a free account at Watson Studio
+
+Thanks for completing this lesson!
+
+Author: Saeed Aghabozorgi
+
+Saeed Aghabozorgi, PhD is a Data Scientist in IBM with a track record of
+developing enterprise level applications that substantially increases
+clients' ability to turn data into actionable knowledge. He is a
+researcher in data mining field and expert in developing advanced
+analytic methods like machine learning and statistical modelling on
+large datasets.
+
+Copyright © 2018 Cognitive Class. This notebook and its source code are
+released under the terms of the MIT License.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
